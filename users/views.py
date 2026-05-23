@@ -27,10 +27,12 @@ class LoginView(APIView):
         
         if user:
             refresh = RefreshToken.for_user(user)
+            refresh['sub'] = user.email  # Add user email to the token payload
+            refresh['name'] = f"{user.first_name} {user.last_name}"  # Add user name to the token payload
+
             return Response({
                 "access": str(refresh.access_token),
                 "refresh": str(refresh),
-                "user_id": user.id
             })
         return Response({"error": "Invalid email or password"}, status=status.HTTP_401_UNAUTHORIZED)
 

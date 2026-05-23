@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -58,6 +59,14 @@ MIDDLEWARE = [
 
 # CRITICAL: Tell Django to use your CustomUser
 AUTH_USER_MODEL = 'users.CustomUser'
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Token valid for 1 hour
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),    # Can refresh for 1 day
+    'ROTATE_REFRESH_TOKENS': True,                  # Give a new refresh token on use
+    'BLACKLIST_AFTER_ROTATION': True,               # Security: old refresh tokens become invalid
+}
 
 REST_FRAMEWORK = {
     # Ensure this path matches where you saved exceptions.py
