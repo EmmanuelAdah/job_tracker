@@ -9,7 +9,7 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError('The Email field must be occupied')
         
-        email = self.normalize_email(email)
+        email = self.normalize_email(email.lower())
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -36,7 +36,7 @@ class CustomUser(AbstractUser):
     
     first_name = models.CharField(max_length=50, blank=False, validators=[validate_name])
     last_name = models.CharField(max_length=50, blank=False, validators=[validate_name])
-    email = models.EmailField(unique=True, max_length=100, blank=False)
+    email = models.EmailField(unique=True, max_length=100, blank=False, lowercase=True)
     bio = models.TextField(max_length=1000, blank=True)
 
     applied_jobs = models.ManyToManyField('job.Job', blank=True, related_name='applicants')
